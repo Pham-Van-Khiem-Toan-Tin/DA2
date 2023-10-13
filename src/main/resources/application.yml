@@ -5,3 +5,8 @@ spring:
     mongodb:
       uri: mongodb+srv://khiem:khiem123@ecommerce.mt8ymga.mongodb.net/
       database: shopecommerce
+token:
+  app:
+    jwtSecret: rfSecret
+    jwtEx: 3600000
+    jwtExRf: 86400000
