@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
-import static com.shopecommerce.utils.DocumentConstants.*;
+import static com.shopecommerce.utils.constants.DocumentConstants.*;
 
 @Document
 @Getter

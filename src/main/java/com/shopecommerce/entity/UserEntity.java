@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-import static com.shopecommerce.utils.DocumentConstants.*;
+import static com.shopecommerce.utils.constants.DocumentConstants.*;
 
 @Document(collection = USER_COLLECTION)
 @Getter
@@ -19,7 +19,7 @@ public class UserEntity extends BaseEntity {
     private String id;
 
     @Field(USER_NAME)
-    private String name;
+    private String fullName;
 
     @Field(USER_EMAIL)
     private String email;
@@ -34,7 +34,7 @@ public class UserEntity extends BaseEntity {
     private String role;
 
     @Field(USER_ADDRESS)
-    private List<AddressOfUserEntity> address;
+    private String address;
 
     @Field(CART)
     private List<CartEntity> cart;
@@ -42,6 +42,12 @@ public class UserEntity extends BaseEntity {
     @Field(LOGIN_FAIL)
     private Integer count;
 
-    @Field(USER_BANNED)
-    private Boolean banned;
+    @Field(USER_STATUS)
+    private Integer status;
+
+    @Field(REFRESH_TOKEN)
+    private String refreshToken;
+
+    @Field(ACCESS_TOKEN_LIST)
+    private List<String> accessTkList;
 }

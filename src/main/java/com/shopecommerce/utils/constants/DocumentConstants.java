@@ -1,4 +1,4 @@
-package com.shopecommerce.utils;
+package com.shopecommerce.utils.constants;
 
 
 import lombok.NoArgsConstructor;
@@ -13,6 +13,10 @@ public class DocumentConstants {
     public static final String QUANTITY = "quantity";
     public static final String PAYMENT_TYPE = "payment_type";
 
+    //jwt
+    public static final String REFRESH_TOKEN = "refresh_token";
+    public static final String ACCESS_TOKEN_LIST = "access_token_list";
+
     //users
     public static final String USER_COLLECTION = "users";
     public static final String USER_NAME = "name";
@@ -21,7 +25,7 @@ public class DocumentConstants {
     public static final String USER_PHONE = "phone";
     public static final String USER_ROLE = "role";
     public static final String LOGIN_FAIL = "count";
-    public static final String USER_BANNED = "banned";
+    public static final String USER_STATUS = "status";
     public static final String USER_ADDRESS = "address";
     public static final String CITY = "city";
     public static final String COUNTRY = "country";
@@ -60,7 +64,7 @@ public class DocumentConstants {
     public static final String FUNCTIONS_COLLECTION = "function";
     public static final String FUNCTION_DESCRIPTION = "description";
     public static final String SUB_FUNCTIONS = "sub_functions";
-
+    public static final String HREF = "href";
 
     //orders admin
     public static final String ORDERS_ADMIN_COLLECTION = "orders_admin";

@@ -26,9 +26,13 @@ public class UserServiceImpl implements UserService {
         }
         else {
             UserEntity newUser = new UserEntity();
-            newUser.setName(registerForm.getUsername());
+            newUser.setId(registerForm.getName());
             newUser.setEmail(registerForm.getEmail());
             newUser.setPassword(passwordEncoder.encode(registerForm.getPassword()));
+            newUser.setRole("ADMIN");
+            newUser.setAddress(registerForm.getAddress());
+            newUser.setPhone(registerForm.getPhone());
+            newUser.setStatus(1);
             userRepository.save(newUser);
             responseForm.setStatus(200);
             responseForm.setMessage("Đăng kí thành công.");

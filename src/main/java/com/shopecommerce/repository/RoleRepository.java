@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface RoleRepository extends MongoRepository<RoleEntity, String> {
     Optional<RoleEntity> findById(String id);
+    Optional<RoleEntity> findRoleEntityByIdAndStatus(String id, Integer status);
 }

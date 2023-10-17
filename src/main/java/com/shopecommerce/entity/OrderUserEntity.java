@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-import static com.shopecommerce.utils.DocumentConstants.*;
+import static com.shopecommerce.utils.constants.DocumentConstants.*;
 
 @Document(collection = ORDER_COLLECTION)
 @Getter

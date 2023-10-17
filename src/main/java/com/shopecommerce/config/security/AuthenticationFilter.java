@@ -1,4 +1,4 @@
-package com.shopecommerce.config;
+package com.shopecommerce.config.security;
 
 import java.io.IOException;
 
@@ -18,7 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.google.gson.Gson;
 import com.shopecommerce.dto.ResponseForm;
-import com.shopecommerce.services.Impl.CustomUserDetailService;
 import com.shopecommerce.utils.JwtUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,13 +39,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String accessToken = parseAccessToken(request);
-            if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
-                String email = jwtUtils.getUserNameFromToken(accessToken);
-                UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
+//            if (accessToken != null && jwtUtils.validateJwtToken(accessToken)) {
+//                String email = jwtUtils.getUserNameFromToken(accessToken);
+//                UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+//                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+//                        userDetails, null, userDetails.getAuthorities());
+//                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//            }
+//            else if(accessToken != null && !request.getRequestURI().contains("/login")) {
+//                throw new Exception("Cannot found token");
+//            }
         } catch (Exception e) {
             logger.error("Cannot validate Token", e);
             response.setStatus(403);

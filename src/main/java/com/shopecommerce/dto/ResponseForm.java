@@ -8,4 +8,5 @@ import lombok.Setter;
 public class ResponseForm {
     private Integer status;
     private String message;
+    private String accessToken;
 }
