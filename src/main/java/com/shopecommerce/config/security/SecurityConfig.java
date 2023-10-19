@@ -16,7 +16,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
-
+    @Autowired
+    private AuthenticationFilter authenticationFilter;
    
 
     @Bean
@@ -30,7 +31,7 @@ public class SecurityConfig {
                         .passwordParameter("password")
                         .successHandler(loginSuccessHandler))
                 .httpBasic(withDefaults())
-                .addFilterBefore(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

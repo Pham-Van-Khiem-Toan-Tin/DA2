@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class RoleController {
     @Autowired
     private RoleService roleService;
-    @PreAuthorize("TEST")
     @GetMapping
     public String postMethodName() {
         // roleService.addRole();
