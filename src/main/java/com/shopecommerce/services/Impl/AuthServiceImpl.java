@@ -5,6 +5,7 @@ import com.shopecommerce.dto.ResponseForm;
 import com.shopecommerce.entity.UserEntity;
 import com.shopecommerce.repository.UserRepository;
 import com.shopecommerce.services.AuthService;
+import com.shopecommerce.services.JWTService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,16 +15,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @Slf4j
 public class AuthServiceImpl  implements AuthService {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
-    MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+    @Autowired
+    private JWTService jwtService;
     @Override
     public ResponseForm register(RegisterForm registerForm) {
         Boolean isExist = userRepository.existsByEmail(registerForm.getEmail());
@@ -51,16 +55,23 @@ public class AuthServiceImpl  implements AuthService {
     @Override
     public ResponseEntity<String> renewRefreshToken(String accessToken) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("access_token_list").in(accessToken));
+        query.addCriteria(Criteria.where("access_token_list").elemMatch(Criteria.where("$eq").is(accessToken)));
         UserEntity user = mongoTemplate.findOne(query, UserEntity.class);
-        if(user != null && user.getRefreshToken() != null) {
+        if (user != null && user.getRefreshToken() != null && user.getAccessTkList().get(user.getAccessTkList().size() - 1).equals(accessToken)) {
             String refreshToken = user.getRefreshToken();
-
+            boolean isValidateRefreshToken = jwtService.validateRefreshToken(refreshToken);
+            if (isValidateRefreshToken) {
+                user.setRefreshToken(null);
+                user.setAccessTkList(null);
+                String newAccessToken = jwtService.generateAccessToken(user);
+                return ResponseEntity.status(HttpStatus.OK).body(newAccessToken);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Đăng nhập bị lỗi");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Đăng nhập bị lỗi");
         }
-        if(user.getAccessTkList().get(user.getAccessTkList().size() -1).equals(accessToken)) {
-
-        }
-        String responseBody = "This is an example response";
-        return ResponseEntity<>(responseBody, HttpStatus.OK);
     }
+
+
 }

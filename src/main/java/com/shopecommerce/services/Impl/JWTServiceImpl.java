@@ -45,8 +45,17 @@ public class JWTServiceImpl implements JWTService {
         mongoTemplate.updateFirst(query, update, UserEntity.class);
         return accessToken;
     }
-    public boolean validateToken(String token) {
-        return jwtUtils.validateJwtToken(acSecret,token);
+    @Override
+    public boolean validateAccessToken(String accessToken) {
+        return jwtUtils.validateJwtToken(acSecret,accessToken);
+    }
+    @Override
+    public boolean validateRefreshToken(String refreshToken) {
+        return jwtUtils.validateJwtToken(rfSecret,refreshToken);
+    }
+    @Override
+    public String generateAccessToken(UserEntity user) {
+        return jwtUtils.generateJwtToken(acSecret, acEx, user);
     }
     public UserEntity generateUserFromToken(String token) {
         return jwtUtils.getUserNameFromToken(acSecret, token);

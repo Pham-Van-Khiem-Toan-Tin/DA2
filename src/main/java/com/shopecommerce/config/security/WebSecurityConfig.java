@@ -25,7 +25,7 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(requests -> requests
-                        .antMatchers("/login", "/register").permitAll()
+                        .antMatchers("/login", "/register", "/refresh").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login.usernameParameter("email")
                         .passwordParameter("password")

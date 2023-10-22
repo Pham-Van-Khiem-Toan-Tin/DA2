@@ -1,6 +1,8 @@
 package com.shopecommerce.config.security;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -51,15 +53,17 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             if (!requestURI.contains("/login") || requestURI.contains("/register")) {
                 String accessToken = parseAccessToken(request);
                 if (accessToken != null) {
-                    boolean validateAccessToken = jwtService.validateToken(accessToken);
-                    if (validateAccessToken) {
+                    boolean validateAccessToken = jwtService.validateAccessToken(accessToken);
+                    if (!validateAccessToken) {
 
                     } else {
                         RestTemplate restTemplate = new RestTemplate();
                         HttpHeaders httpHeaders = new HttpHeaders();
                         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                        HttpEntity<String> requestRf = new HttpEntity<>(accessToken, httpHeaders);
-                        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/refresh", request, String.class);
+                        Map<String, String> accessTokenMap = new HashMap<>();
+                        accessTokenMap.put("accessToken", accessToken);
+                        HttpEntity<String> requestRf = new HttpEntity<>(gson.toJson(accessTokenMap), httpHeaders);
+                        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8000/refresh", requestRf, String.class);
                         String responseToken = responseEntity.getBody();
                     }
                     UserEntity user = jwtService.generateUserFromToken(accessToken);
