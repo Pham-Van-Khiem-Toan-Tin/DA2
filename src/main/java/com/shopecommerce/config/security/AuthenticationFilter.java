@@ -4,17 +4,19 @@ import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.shopecommerce.entity.UserEntity;
+import com.shopecommerce.services.Impl.JWTServiceImpl;
+import com.shopecommerce.services.JWTService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +27,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.google.gson.Gson;
 import com.shopecommerce.dto.ResponseForm;
-import com.shopecommerce.utils.JwtUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +37,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailService customUserDetailService;
     @Autowired
-    private JwtService jwtService;
+    private JWTService jwtService;
 
     private static final Gson gson = new Gson();
 
@@ -58,7 +59,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                         HttpHeaders httpHeaders = new HttpHeaders();
                         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
                         HttpEntity<String> requestRf = new HttpEntity<>(accessToken, httpHeaders);
-
+                        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/refresh", request, String.class);
+                        String responseToken = responseEntity.getBody();
                     }
                     UserEntity user = jwtService.generateUserFromToken(accessToken);
                     UserDetails userDetail = customUserDetailService.loadUserByUsername(user.getEmail());

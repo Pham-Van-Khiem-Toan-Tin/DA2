@@ -1,7 +1,8 @@
-package com.shopecommerce.config.security;
+package com.shopecommerce.services.Impl;
 
 import com.shopecommerce.entity.UserEntity;
 import com.shopecommerce.repository.UserRepository;
+import com.shopecommerce.services.JWTService;
 import com.shopecommerce.utils.JwtUtils;
 import com.shopecommerce.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 
 @Service
-public class JwtService {
+public class JWTServiceImpl implements JWTService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
